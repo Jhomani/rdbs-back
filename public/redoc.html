@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>API Docs</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://blockchainconsultora.com/images/seo/favicon-32x32.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    li[data-item-id^="group/"] {
+      margin-top: 0;
+    }
+
+    div.menu-content img[alt="app-logo"] {
+      width: 150px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <redoc spec-url='/openapi.json'
+    theme='{"colors": {"primary": { "main": "#2f84c7"}, "text": {"primary": "#919191"}}, "sidebar": {"backgroundColor": "#fff"}}'>
+  </redoc>
+  <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+</body>
+
+</html>

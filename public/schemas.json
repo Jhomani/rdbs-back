@@ -1,0 +1,124 @@
+{
+  "id": {
+    "properties": {
+      "id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  },
+  "createdAt": {
+    "properties": {
+      "createdAt": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  },
+  "updatedAt": {
+    "properties": {
+      "updatedAt": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  },
+  "RegionPrice": {
+    "type": "object",
+    "required": [
+      "region",
+      "prices"
+    ],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "region": {
+        "type": "string"
+      },
+      "prices": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "from": {
+              "type": "number"
+            },
+            "to": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "RegionPrice_Model": {
+    "allOf": [
+      {
+        "$ref": "#/RegionPrice"
+      }
+    ]
+  },
+  "User": {
+    "type": "object",
+    "required": [
+      "email",
+      "password",
+      "name",
+      "avatar"
+    ],
+    "properties": {
+      "email": {
+        "email": true,
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "avatar": {
+        "type": "string"
+      }
+    }
+  },
+  "User_Model": {
+    "allOf": [
+      {
+        "$ref": "#/id"
+      },
+      {
+        "$ref": "#/createdAt"
+      },
+      {
+        "$ref": "#/User"
+      }
+    ]
+  },
+  "Region": {
+    "type": "object",
+    "required": [
+      "region"
+    ],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "region": {
+        "type": "string"
+      }
+    }
+  },
+  "Region_Model": {
+    "allOf": [
+      {
+        "$ref": "#/Region"
+      }
+    ]
+  }
+}

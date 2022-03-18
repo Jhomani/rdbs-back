@@ -1,0 +1,51 @@
+{
+  "name": "intercity",
+  "version": "0.0.1",
+  "private": true,
+  "description": "job project with express and dynamo",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "./dist/app.js",
+  "scripts": {
+    "start": "node ./dist/app.js",
+    "launch": "nodemon ./dist/app.js",
+    "prewatch": "rm -fr ./dist",
+    "watch": "tsc --w",
+    "migrate": "node dist/migrate.js",
+    "init-ts": "tsc --init",
+    "build": "tsc -p ."
+  },
+  "_moduleAliases": {
+    "@main": ".",
+    "@src": "dist",
+    "@public": "public",
+    "@test": "test"
+  },
+  "dependencies": {
+    "aws-serverless-express": "^3.4.0",
+    "axios": "^0.26.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "joi": "^17.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
+    "morgan": "^1.10.0",
+    "paypal-rest-sdk": "^1.8.1",
+    "uuidv4": "6.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.6",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/morgan": "^1.9.1",
+    "@types/paypal-rest-sdk": "^1.7.6",
+    "aws-sdk": "^2.1080.0",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.8.0"
+  }
+}

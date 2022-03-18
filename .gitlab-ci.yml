@@ -1,0 +1,33 @@
+image: jhomani/node-cd-sl:0.1
+
+before_script:
+  - echo "$CREDENTIALS" > ~/.aws/credentials
+  - rm -rf .git .vscode .bin
+
+stages:
+  - deploy
+  - migrate
+
+Deploy Production:
+  stage: deploy
+  script:
+    - yarn install --silent
+    - yarn build
+    - rm -fr src test
+    - yarn install --prod --silent
+    - echo "$ENV_PROD" > .env
+    - cat ~/.aws/credentials
+    - serverless deploy
+  only:
+    - master
+
+Migrate Production:
+  stage: migrate
+  variables:
+    WORK_DIR: '/home/gitlab/alcaldia/backend/production'
+    IP_DEV: '3.134.233.75'
+  script:
+    - chmod 644 ~/.ssh/known_hosts
+  when: manual
+  only:
+    - master

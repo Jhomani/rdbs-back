@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "intercity",
+    "x-logo": {
+      "url": "/images/back.png",
+      "altText": "app-logo"
+    },
+    "contact": {
+      "name": "API Support",
+      "email": "jhomanidev@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    [
+      {
+        "name": "RegionPriceModel",
+        "x-displayName": "RegionPrice",
+        "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RegionPriceModel\" />"
+      },
+      {
+        "name": "UserModel",
+        "x-displayName": "User",
+        "description": "<SchemaDefinition schemaRef=\"#/components/schemas/UserModel\" />"
+      },
+      {
+        "name": "RegionModel",
+        "x-displayName": "Region",
+        "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RegionModel\" />"
+      }
+    ]
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Models",
+      "tags": [
+        "RegionPrice_Model",
+        "User_Model",
+        "Region_Model"
+      ]
+    }
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegionPrice"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionPrice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "Bearer": [
+              "token"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionPrice"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "$ref": "./schemas.json"
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "For this sample, you can use the api key `special-key` to access some endpoints, you get Api Key on User profile seccion.\n",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  }
+}
