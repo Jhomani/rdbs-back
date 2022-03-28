@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "intercity",
+    "title": "backend-seed",
     "x-logo": {
       "url": "/images/back.png",
       "altText": "app-logo"
@@ -17,31 +17,29 @@
     }
   },
   "tags": [
-    [
-      {
-        "name": "RegionPriceModel",
-        "x-displayName": "RegionPrice",
-        "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RegionPriceModel\" />"
-      },
-      {
-        "name": "UserModel",
-        "x-displayName": "User",
-        "description": "<SchemaDefinition schemaRef=\"#/components/schemas/UserModel\" />"
-      },
-      {
-        "name": "RegionModel",
-        "x-displayName": "Region",
-        "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RegionModel\" />"
-      }
-    ]
+    {
+      "name": "RegionPriceModel",
+      "x-displayName": "RegionPrice",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RegionPrice_Model\" />"
+    },
+    {
+      "name": "UserModel",
+      "x-displayName": "User",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/User_Model\" />"
+    },
+    {
+      "name": "RegionModel",
+      "x-displayName": "Region",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Region_Model\" />"
+    }
   ],
   "x-tagGroups": [
     {
       "name": "Models",
       "tags": [
-        "RegionPrice_Model",
-        "User_Model",
-        "Region_Model"
+        "RegionPriceModel",
+        "UserModel",
+        "RegionModel"
       ]
     }
   ],
@@ -92,7 +90,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserModel"
+                  "$ref": "#/components/schemas/User_Model"
                 }
               }
             }
@@ -128,7 +126,7 @@
   },
   "components": {
     "schemas": {
-      "$ref": "./schemas.json"
+      "$ref": "/schemas.json"
     },
     "securitySchemes": {
       "Bearer": {

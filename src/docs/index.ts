@@ -1,38 +1,29 @@
-import { generateSchemas } from './schema-generator';
-import { parseTemplate } from './template-engine';
+import {generateSchemas} from './schema-generator';
+import {parseTemplate} from './template-engine';
 import fs from 'fs';
 
-interface InTag {
-  name: string,
-  'x-displayName': string,
-  description: string,
-}
-
-interface InXTagGroup {
-  name: string,
-  tags: string[],
-}
-
 export default function () {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const pack = require('@main/package.json');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const openapi = require('@public/openapi.json');
 
-  parseTemplate('app', {
-    name: pack.name,
-    version: pack.version,
-  }, 'public/index');
+  parseTemplate(
+    'app',
+    {
+      name: pack.name,
+      version: pack.version,
+    },
+    'public/index'
+  );
 
   const [modelGroup, modelTags] = generateSchemas();
 
   openapi.info.version = pack.version;
   openapi.info.title = pack.name;
 
-  openapi.tags = [
-    modelTags
-  ];
-  openapi['x-tagGroups'] = [
-    modelGroup
-  ];
+  openapi.tags = modelTags;
+  openapi['x-tagGroups'] = [modelGroup];
 
-  fs.writeFileSync('public/openapi.json', JSON.stringify(openapi, null, 2))
+  fs.writeFileSync('public/openapi.json', JSON.stringify(openapi, null, 2));
 }

@@ -1,5 +1,6 @@
-import { properties, modelStore, PropertyDecorator } from '@src/decorators';
-import fs from 'fs'
+import {properties, modelStore, PropertyDecorator} from '@src/decorators';
+import fs from 'fs';
+import {delElement} from '@src/utils';
 
 interface SchemaModel {
   type?: string;
@@ -9,36 +10,41 @@ interface SchemaModel {
   format?: string;
   min?: number;
   max?: number;
-  properties?: { [a: string]: object };
+  properties?: {[a: string]: object};
 }
 
 interface SchemasModel {
-  [a: string]: SchemaModel
+  [a: string]: SchemaModel;
+}
+
+interface HRef {
+  $ref: string;
 }
 
 const buildSchema = (options: PropertyDecorator, automatics?: string[]) => {
-  const { type, required, ...others } = options;
+  const {type} = options;
   let res: SchemaModel;
 
-  if (typeof type === 'string')
-    res = { ...others, type };
+  if (typeof type === 'string') res = delElement(options, 'required');
   else {
-    if (type instanceof Array) res = {
-      type: 'array',
-      items: buildSchema({ type: type[0] }),
-    }
+    if (type instanceof Array)
+      res = {
+        type: 'array',
+        items: buildSchema({type: type[0]}),
+      };
     else {
       const schema: SchemaModel = {
-        type: "object",
+        type: 'object',
         required: [],
-        properties: {}
-      }
+        properties: {},
+      };
 
       for (const property in type) {
-        const { required, automatic } = type[property];
+        const {required, automatic} = type[property];
 
         if (automatic && automatics) {
-          automatics.push(property); continue;
+          automatics.push(property);
+          continue;
         }
 
         if (required) schema.required?.push(property);
@@ -52,43 +58,50 @@ const buildSchema = (options: PropertyDecorator, automatics?: string[]) => {
   }
 
   return res;
-}
+};
 
-export const generateSchemas = (generated?: (SchemaModel & { name: string })[]) => {
+export const generateSchemas = (
+  generated?: (SchemaModel & {name: string})[]
+) => {
   const schemas: SchemasModel = {};
   const modelTagKeys: string[] = [];
 
   generated = generated || [
-    { name: 'id', type: 'string', format: 'uuid' },
-    { name: 'createdAt', type: 'string', format: 'date-time' },
-    { name: 'updatedAt', type: 'string', format: 'date-time' },
-  ]
+    {name: 'id', type: 'string', format: 'uuid'},
+    {name: 'createdAt', type: 'string', format: 'date-time'},
+    {name: 'updatedAt', type: 'string', format: 'date-time'},
+  ];
 
-  generated.forEach(({ type, format, name }) => schemas[name] = {
-    properties: {
-      [name]: {
-        type,
-        format
-      }
-    }
-  })
+  generated.forEach(
+    ({type, format, name}) =>
+      (schemas[name] = {
+        properties: {
+          [name]: {
+            type,
+            format,
+          },
+        },
+      })
+  );
 
   for (const model in modelStore) {
     if (modelStore[model].entity) {
-      const automatics: string[] = []
+      const automatics: string[] = [];
 
-      schemas[model] = buildSchema({ type: properties[model] }, automatics);
+      schemas[model] = buildSchema({type: properties[model]}, automatics);
 
       if (modelStore[model].entity) {
-        const allOf = []
+        const allOf: HRef[] = [];
 
-        automatics.forEach((attr) => allOf.push({
-          $ref: `#/${attr}`
-        }))
+        automatics.forEach((attr) =>
+          allOf.push({
+            $ref: `#/${attr}`,
+          })
+        );
 
-        allOf.push({ $ref: `#/${model}` })
+        allOf.splice(1, 0, {$ref: `#/${model}`});
 
-        schemas[`${model}_Model`] = { allOf };
+        schemas[`${model}_Model`] = {allOf};
 
         modelTagKeys.push(model);
       }
@@ -97,16 +110,16 @@ export const generateSchemas = (generated?: (SchemaModel & { name: string })[]) 
 
   const modelGroup = {
     name: 'Models',
-    tags: modelTagKeys.map((name) => `${name}_Model`),
-  }
+    tags: modelTagKeys.map((name) => `${name}Model`),
+  };
 
   const modelTags = modelTagKeys.map((name) => ({
     name: `${name}Model`,
     'x-displayName': name,
-    description: `<SchemaDefinition schemaRef="#/components/schemas/${name}Model" />`
-  }))
+    description: `<SchemaDefinition schemaRef="#/components/schemas/${name}_Model" />`,
+  }));
 
-  fs.writeFileSync('public/schemas.json', JSON.stringify(schemas, null, 2))
+  fs.writeFileSync('public/schemas.json', JSON.stringify(schemas, null, 2));
 
   return [modelGroup, modelTags];
-}
+};

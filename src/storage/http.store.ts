@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from 'express';
 
 interface HttpHandler {
   request: Request;
@@ -15,6 +15,5 @@ export const http: HttpHandler = {
     http.response = res;
 
     next();
-  }
+  },
 };
-

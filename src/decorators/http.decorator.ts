@@ -5,108 +5,64 @@ interface RouteStorage {
       httpMethod: 'get' | 'delete' | 'post' | 'patch';
       schemaRes?: string | string[];
       schemaReq?: string | string[];
-    }
-  }
-}
-
-interface ParamStorage {
-  [a: string]: {
-    [b: string]: {
-      index: number;
-      paramType: string;
-    }
-  }
-}
-
-export const methodStorage: RouteStorage = {}
-export const paramStorage: ParamStorage = {}
-
-export const get = <T, Q>(
-  route: string,
-  resModel?: { new(): T },
-  reqModel?: { new(): Q }
-) => {
-  return (target: object, methodName: string) => {
-    const className = target.constructor.name;
-
-    if (!methodStorage[className]) methodStorage[className] = {};
-
-    methodStorage[className][methodName] = {
-      route,
-      httpMethod: 'get',
-      schemaRes: resModel?.name,
-      schemaReq: reqModel?.name || resModel?.name,
-    }
+    };
   };
 }
+
+export const methodStorage: RouteStorage = {};
+
+const saveDeatails = <T, Q>(
+  route: string,
+  target: object,
+  methodName: string,
+  httpMethod: 'get' | 'post' | 'delete' | 'patch',
+  resModel?: {new (): T},
+  reqModel?: {new (): Q}
+) => {
+  const className = target.constructor.name;
+
+  if (!methodStorage[className]) methodStorage[className] = {};
+
+  methodStorage[className][methodName] = {
+    route,
+    httpMethod,
+    schemaRes: resModel?.name,
+    schemaReq: reqModel?.name || resModel?.name,
+  };
+};
+
+export const get = <T>(route: string, resModel?: {new (): T}) => {
+  return (target: object, methodName: string) => {
+    saveDeatails(route, target, methodName, 'get', resModel);
+  };
+};
 
 export const post = <T, Q>(
   route: string,
-  resModel?: { new(): T },
-  reqModel?: { new(): Q }
+  resModel?: {new (): T},
+  reqModel?: {new (): Q}
 ) => {
   return (target: object, methodName: string) => {
-    const className = target.constructor.name;
-
-    if (!methodStorage[className]) methodStorage[className] = {};
-
-    methodStorage[className][methodName] = {
-      route,
-      httpMethod: 'post',
-      schemaRes: resModel?.name,
-      schemaReq: reqModel?.name || resModel?.name,
-    }
+    saveDeatails(route, target, methodName, 'post', resModel, reqModel);
   };
-}
+};
 
 export const patch = <T, Q>(
   route: string,
-  resModel?: { new(): T },
-  reqModel?: { new(): Q }
+  resModel?: {new (): T},
+  reqModel?: {new (): Q}
 ) => {
   return (target: object, methodName: string) => {
-    const className = target.constructor.name;
-
-    if (!methodStorage[className]) methodStorage[className] = {};
-
-    methodStorage[className][methodName] = {
-      route,
-      httpMethod: 'patch',
-      schemaRes: resModel?.name,
-      schemaReq: reqModel?.name || resModel?.name,
-    }
+    saveDeatails(route, target, methodName, 'patch', resModel, reqModel);
   };
-}
+};
 
 export const del = <T, Q>(
   route: string,
-  resModel?: { new(): T },
-  reqModel?: { new(): Q }
+  resModel?: {new (): T},
+  reqModel?: {new (): Q}
 ) => {
   return (target: object, methodName: string) => {
-    const className = target.constructor.name;
-
-    if (!methodStorage[className]) methodStorage[className] = {};
-
-    methodStorage[className][methodName] = {
-      route,
-      httpMethod: 'delete',
-      schemaRes: resModel?.name,
-      schemaReq: reqModel?.name || resModel?.name,
-    }
+    saveDeatails(route, target, methodName, 'delete', resModel, reqModel);
   };
-}
-
-export const param = <T>(pType: string | { new(): T }) => {
-  return (target: object, methodName: string, paramIndex: number) => {
-    const paramType = typeof pType === 'string' ? pType : pType.name;
-    const className = target.constructor.name;
-
-    if (!paramStorage[className]) paramStorage[className] = {};
-
-    paramStorage[className][methodName] = {
-      index: paramIndex,
-      paramType,
-    }
-  };
-}
+};

@@ -73,8 +73,8 @@
     ],
     "properties": {
       "email": {
-        "email": true,
-        "type": "string"
+        "type": "string",
+        "email": true
       },
       "password": {
         "type": "string"
@@ -93,10 +93,10 @@
         "$ref": "#/id"
       },
       {
-        "$ref": "#/createdAt"
+        "$ref": "#/User"
       },
       {
-        "$ref": "#/User"
+        "$ref": "#/createdAt"
       }
     ]
   },
