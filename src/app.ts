@@ -6,10 +6,6 @@ import initDocs from '@src/docs';
 import express, {Application} from 'express';
 import morgan from 'morgan';
 import path from 'path';
-// import Payments from './routes/paypal.routes';
-// import RegionPrices from './routes/region-prices.route';
-// import Settings from './routes/setting.routes';
-// import UserRouter from './routes/users.routes';
 import {http} from './storage';
 
 class App {
@@ -20,16 +16,15 @@ class App {
     this.app = express();
     this.settings();
     this.middlewares();
-    this.routes();
 
     generateControllers(this.app);
 
     initDocs();
   }
 
-  static getInstance() {
+  static getInstance(post?: number) {
     if (!App.instance) {
-      App.instance = new App();
+      App.instance = new App(post);
     }
 
     return App.instance;
@@ -39,13 +34,6 @@ class App {
     this.app.set('port', this.port || process.env.PORT || 9000);
 
     this.app.use('/', express.static(path.join(__dirname, '../public')));
-  }
-
-  routes() {
-    // this.app.use('/users', UserRouter);
-    // this.app.use('/settings', Settings);
-    // this.app.use('/paypal', Payments);
-    // this.app.use('/region-prices', RegionPrices);
   }
 
   middlewares() {
@@ -63,10 +51,10 @@ class App {
   }
 }
 
-const appInstance = App.getInstance();
+const appInstance = App.getInstance(3001);
 
 const app = appInstance.getApp();
 
-if (process.env.APP_MODE === 'development')
-  app.listen(9000, () => console.log('Running on http://localhost:9000'));
-else module.exports = app;
+const message = `Running on http://localhost:${app.get('port')}`;
+
+app.listen(app.get('port'), () => console.log(message));

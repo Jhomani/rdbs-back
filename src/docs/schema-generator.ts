@@ -21,7 +21,7 @@ interface HRef {
   $ref: string;
 }
 
-const buildSchema = (options: PropertyDecorator, automatics?: string[]) => {
+const buildSchema = (options: PropertyDecorator, generatedAr?: string[]) => {
   const {type} = options;
   let res: SchemaModel;
 
@@ -40,10 +40,10 @@ const buildSchema = (options: PropertyDecorator, automatics?: string[]) => {
       };
 
       for (const property in type) {
-        const {required, automatic} = type[property];
+        const {required, generated} = type[property];
 
-        if (automatic && automatics) {
-          automatics.push(property);
+        if (generated && generatedAr) {
+          generatedAr.push(property);
           continue;
         }
 
@@ -86,14 +86,14 @@ export const generateSchemas = (
 
   for (const model in modelStore) {
     if (modelStore[model].entity) {
-      const automatics: string[] = [];
+      const generatedAr: string[] = [];
 
-      schemas[model] = buildSchema({type: properties[model]}, automatics);
+      schemas[model] = buildSchema({type: properties[model]}, generatedAr);
 
       if (modelStore[model].entity) {
         const allOf: HRef[] = [];
 
-        automatics.forEach((attr) =>
+        generatedAr.forEach((attr) =>
           allOf.push({
             $ref: `#/${attr}`,
           })

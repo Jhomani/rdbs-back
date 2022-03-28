@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "backend-seed",
+    "title": "atm-project",
     "x-logo": {
       "url": "/images/back.png",
       "altText": "app-logo"
@@ -18,28 +18,28 @@
   },
   "tags": [
     {
-      "name": "RegionPriceModel",
-      "x-displayName": "RegionPrice",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RegionPrice_Model\" />"
+      "name": "RecordModel",
+      "x-displayName": "Record",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Record_Model\" />"
     },
     {
-      "name": "UserModel",
-      "x-displayName": "User",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/User_Model\" />"
+      "name": "MoneyModel",
+      "x-displayName": "Money",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Money_Model\" />"
     },
     {
-      "name": "RegionModel",
-      "x-displayName": "Region",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Region_Model\" />"
+      "name": "ATMModel",
+      "x-displayName": "ATM",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ATM_Model\" />"
     }
   ],
   "x-tagGroups": [
     {
       "name": "Models",
       "tags": [
-        "RegionPriceModel",
-        "UserModel",
-        "RegionModel"
+        "RecordModel",
+        "MoneyModel",
+        "ATMModel"
       ]
     }
   ],

@@ -23,101 +23,95 @@
       }
     }
   },
-  "RegionPrice": {
+  "Record": {
     "type": "object",
     "required": [
-      "region",
-      "prices"
+      "amount",
+      "balance",
+      "userId"
     ],
     "properties": {
-      "id": {
+      "amount": {
         "type": "string"
       },
-      "region": {
+      "balance": {
         "type": "string"
       },
-      "prices": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": [],
-          "properties": {
-            "amount": {
-              "type": "number"
-            },
-            "from": {
-              "type": "number"
-            },
-            "to": {
-              "type": "number"
-            }
-          }
-        }
-      }
-    }
-  },
-  "RegionPrice_Model": {
-    "allOf": [
-      {
-        "$ref": "#/RegionPrice"
-      }
-    ]
-  },
-  "User": {
-    "type": "object",
-    "required": [
-      "email",
-      "password",
-      "name",
-      "avatar"
-    ],
-    "properties": {
-      "email": {
-        "type": "string",
-        "email": true
-      },
-      "password": {
-        "type": "string"
-      },
-      "name": {
-        "type": "string"
-      },
-      "avatar": {
+      "userId": {
         "type": "string"
       }
     }
   },
-  "User_Model": {
+  "Record_Model": {
     "allOf": [
       {
         "$ref": "#/id"
       },
       {
-        "$ref": "#/User"
+        "$ref": "#/Record"
       },
       {
         "$ref": "#/createdAt"
       }
     ]
   },
-  "Region": {
+  "Money": {
     "type": "object",
     "required": [
-      "region"
+      "amount",
+      "quantity",
+      "imageUrl",
+      "atmId"
     ],
     "properties": {
-      "id": {
+      "amount": {
         "type": "string"
       },
-      "region": {
+      "quantity": {
+        "type": "string"
+      },
+      "imageUrl": {
+        "type": "string"
+      },
+      "atmId": {
         "type": "string"
       }
     }
   },
-  "Region_Model": {
+  "Money_Model": {
     "allOf": [
       {
-        "$ref": "#/Region"
+        "$ref": "#/id"
+      },
+      {
+        "$ref": "#/Money"
+      }
+    ]
+  },
+  "ATM": {
+    "type": "object",
+    "required": [
+      "address"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "address": {
+        "type": "string"
+      }
+    }
+  },
+  "ATM_Model": {
+    "allOf": [
+      {
+        "$ref": "#/id"
+      },
+      {
+        "$ref": "#/ATM"
+      },
+      {
+        "$ref": "#/createdAt"
       }
     ]
   }

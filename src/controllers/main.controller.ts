@@ -15,7 +15,7 @@ export const generateControllers = (app: Application) => {
     for (const method in methodStorage[className]) {
       const {route, httpMethod} = methodStorage[className][method];
 
-      const onCallMethod = (request: Request, response: Response) => {
+      const onCallMethod = async (request: Request, response: Response) => {
         const paramValues: unknown[] = [];
         let status;
 
@@ -25,14 +25,16 @@ export const generateControllers = (app: Application) => {
               paramValues.unshift(request.params[name]);
           });
 
-        console.log(paramValues, className, method);
+        try {
+          const controllerOutput = await instanced[method](...paramValues);
 
-        const controllerOutput = instanced[method](...paramValues);
+          if (controllerOutput) status = 200;
+          else status = 204;
 
-        if (controllerOutput) status = 200;
-        else status = 204;
-
-        return response.status(status).json(controllerOutput);
+          return response.status(status).json(controllerOutput);
+        } catch {
+          console.log('controller error');
+        }
       };
 
       router.route(formatPath(route))[httpMethod](onCallMethod);

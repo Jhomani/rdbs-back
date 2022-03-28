@@ -5,6 +5,7 @@ type ObjectType = {
 export interface PropertyDecorator {
   type:
     | 'string'
+    | 'date'
     | 'number'
     | 'boolean'
     | ObjectType
@@ -14,9 +15,12 @@ export interface PropertyDecorator {
   required?: boolean;
   min?: number;
   max?: number;
+  serial?: boolean;
+  primaryKey?: boolean;
+  autoIncrement?: boolean;
   format?: string;
   email?: boolean;
-  automatic?: boolean;
+  generated?: boolean;
 }
 
 interface PropertiesStore {

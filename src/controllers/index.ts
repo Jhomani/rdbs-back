@@ -1,2 +1,2 @@
-export * from './auth.controller';
-export * from './product.controller'
+export * from './record.controller';
+export * from './atm.controller';
