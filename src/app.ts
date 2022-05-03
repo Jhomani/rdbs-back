@@ -51,7 +51,7 @@ class App {
   }
 }
 
-const appInstance = App.getInstance(3001);
+const appInstance = App.getInstance(9000);
 
 const app = appInstance.getApp();
 

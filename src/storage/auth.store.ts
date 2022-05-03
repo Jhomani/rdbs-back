@@ -1,5 +1,5 @@
 class Auth {
-  userId: string = "";
+  userId = '';
 
   setUserId(userId: string) {
     this.userId = userId;

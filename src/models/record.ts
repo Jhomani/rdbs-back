@@ -6,29 +6,29 @@ export class Record {
     type: 'string',
     generated: true,
   })
-  id!: string;
+  id: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  amount!: string;
+  amount: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  balance!: string;
+  balance: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  userId!: string;
+  userId: string;
 
   @property({
     type: 'date',
     generated: true,
   })
-  createdAt!: Date;
+  createdAt: Date;
 }

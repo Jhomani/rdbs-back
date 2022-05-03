@@ -1,11 +1,8 @@
-import dotenv from 'dotenv';
-
 import 'module-alias/register';
+import 'dotenv/config';
 import '../models';
 
 import {modelStore, properties} from '../decorators';
-
-dotenv.config();
 
 let SQLScript = '';
 
@@ -34,7 +31,7 @@ for (const table in modelStore) {
   if (modelStore[table].entity) {
     SQLScript += `
       CREATE TABLE ${table}(
-        id serial PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
         username VARCHAR (50) UNIQUE NOT NULL,
         password VARCHAR (50) NOT NULL,
         email VARCHAR (255) UNIQUE NOT NULL,

@@ -6,7 +6,7 @@ export class ATM {
     type: 'string',
     generated: true,
   })
-  id!: string;
+  id: string;
 
   @property({
     type: 'string',
@@ -17,11 +17,11 @@ export class ATM {
     required: true,
     type: 'string',
   })
-  address!: string;
+  address: string;
 
   @property({
     type: 'string',
     generated: true,
   })
-  createdAt!: string;
+  createdAt: string;
 }

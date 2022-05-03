@@ -1,6 +1,6 @@
 interface RouteStorage {
-  [a: string]: {
-    [b: string]: {
+  [model: string]: {
+    [method: string]: {
       route: string;
       httpMethod: 'get' | 'delete' | 'post' | 'patch';
       schemaRes?: string | string[];

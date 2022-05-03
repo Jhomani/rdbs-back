@@ -6,29 +6,29 @@ export class Money {
     type: 'string',
     generated: true,
   })
-  id!: string;
+  id: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  amount!: string;
+  amount: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  quantity!: string;
+  quantity: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  imageUrl!: string;
+  imageUrl: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  atmId!: string;
+  atmId: string;
 }
