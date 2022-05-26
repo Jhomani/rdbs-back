@@ -1,38 +1,34 @@
 import 'dotenv/config';
 import 'module-alias/register';
 
-import {generateControllers} from '@src/controllers/main.controller';
 import initDocs from '@src/docs';
 import express, {Application} from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import {http} from './storage';
+import {generateControllers} from '@src/controllers/generator';
 
 class App {
   private app: Application;
   private static instance: App;
 
-  constructor(private port?: number | string) {
+  constructor() {
     this.app = express();
     this.settings();
     this.middlewares();
 
     generateControllers(this.app);
-
     initDocs();
   }
 
-  static getInstance(post?: number) {
-    if (!App.instance) {
-      App.instance = new App(post);
-    }
+  static getInstance() {
+    if (!App.instance) App.instance = new App();
 
     return App.instance;
   }
 
   settings() {
-    this.app.set('port', this.port || process.env.PORT || 9000);
-
+    this.app.set('port', process.env.PORT || 9000);
     this.app.use('/', express.static(path.join(__dirname, '../public')));
   }
 
@@ -42,19 +38,18 @@ class App {
 
     this.app.use(http.setSession.bind(this));
     this.app.use(express.json());
-    this.app.use(cors());
     this.app.use(morgan('dev')); // To log etch http request
     this.app.use(express.urlencoded({extended: true}));
+    this.app.use(cors());
   }
+
   getApp() {
     return this.app;
   }
 }
 
-const appInstance = App.getInstance(9000);
-
+const appInstance = App.getInstance();
 const app = appInstance.getApp();
 
 const message = `Running on http://localhost:${app.get('port')}`;
-
 app.listen(app.get('port'), () => console.log(message));

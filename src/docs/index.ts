@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {generateSchemas} from './schema-generator';
 import {parseTemplate} from './template-engine';
 import fs from 'fs';
 
 export default function () {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const pack = require('@main/package.json');
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const openapi = require('@public/openapi.json');
 
   parseTemplate(

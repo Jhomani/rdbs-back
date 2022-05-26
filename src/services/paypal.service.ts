@@ -1,5 +1,5 @@
-import paypal, { payment } from 'paypal-rest-sdk';
-import { http } from '@src/storage';
+import paypal, {payment} from 'paypal-rest-sdk';
+import {http} from '@src/storage';
 
 const langDic = {
   ES: {
@@ -9,50 +9,61 @@ const langDic = {
   EN: {
     name: 'Insurance',
     description: 'Payment to insurance',
-  }
-}
+  },
+};
 
-const generatePayment = (amount: number, host: string, query = '', lang: "ES" | "EN" = 'ES') => {
+const generatePayment = (
+  amount: number,
+  host: string,
+  query = '',
+  lang: 'ES' | 'EN' = 'ES'
+) => {
   return {
-    "intent": "sale",
-    "payer": {
-      "payment_method": "paypal"
+    intent: 'sale',
+    payer: {
+      payment_method: 'paypal',
     },
-    "redirect_urls": {
-      "return_url": `${host}/paypal/success${query}`,
-      "cancel_url": `${host}/paypal/cancel${query}`
+    redirect_urls: {
+      return_url: `${host}/paypal/success${query}`,
+      cancel_url: `${host}/paypal/cancel${query}`,
     },
-    "transactions": [{
-      "item_list": {
-        "items": [{
-          "name": langDic[lang].name,
-          "sku": "0001",
-          "price": `${amount}`,
-          "currency": "USD",
-          "quantity": 1
-        }]
-      },
+    transactions: [
+      {
+        item_list: {
+          items: [
+            {
+              name: langDic[lang].name,
+              sku: '0001',
+              price: `${amount}`,
+              currency: 'USD',
+              quantity: 1,
+            },
+          ],
+        },
 
-      "amount": {
-        "currency": "USD",
-        "total": `${amount}`
+        amount: {
+          currency: 'USD',
+          total: `${amount}`,
+        },
+        description: langDic[lang].description,
       },
-      "description": langDic[lang].description
-    }]
+    ],
   };
-}
+};
 
 const executePayment = (amount: number, payerId: string) => {
   return {
-    "payer_id": payerId,
-    "transactions": [{
-      "amount": {
-        "currency": "USD",
-        "total": `${amount}`
+    payer_id: payerId,
+    transactions: [
+      {
+        amount: {
+          currency: 'USD',
+          total: `${amount}`,
+        },
       },
-    }]
+    ],
   };
-}
+};
 
 export class PaypalService {
   private host: string;
@@ -67,7 +78,11 @@ export class PaypalService {
     this.host = String(process.env.APP_URL);
   }
 
-  public async createPayment(amount: number, query: string, lang?: 'ES' | 'EN') {
+  public async createPayment(
+    amount: number,
+    query: string,
+    lang?: 'ES' | 'EN'
+  ) {
     const schema = generatePayment(amount, this.host, query, lang);
 
     try {
@@ -85,38 +100,42 @@ export class PaypalService {
               }
             }
 
-            resolve(link)
+            resolve(link);
           }
         });
-      })
+      });
 
       return <string>link;
     } catch (error) {
       console.log(error);
 
       throw http.response.status(500).json({
-        message: "Error while paying"
+        message: 'Error while paying',
       });
     }
   }
 
-  public async executePayment(amount: number, payerId: string, paymentId: string) {
+  public async executePayment(
+    amount: number,
+    payerId: string,
+    paymentId: string
+  ) {
     const schema = executePayment(amount, payerId);
 
     try {
       const paymentDatas = await new Promise((resolve, reject) => {
         payment.execute(paymentId, schema, function (error, details) {
           if (error) reject(error);
-          else resolve(details)
+          else resolve(details);
         });
-      })
+      });
 
       return paymentDatas;
     } catch (error) {
       console.log(error);
 
       throw http.response.status(500).json({
-        message: "Error while paying"
+        message: 'Error while paying',
       });
     }
   }

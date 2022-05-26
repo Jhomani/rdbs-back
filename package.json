@@ -9,9 +9,9 @@
   "main": "./dist/app.js",
   "scripts": {
     "start": "node ./dist/app.js",
-    "launch": "nodemon ./dist/app.js",
-    "prewatch": "rm -fr ./dist",
-    "watch": "tsc --w",
+    "launch": "nodemon  --ignore 'public/*' ./dist/app.js",
+    "prebuild:watch": "rm -fr ./dist",
+    "build:watch": "tsc --w",
     "migrate": "node dist/migrate.js",
     "init-ts": "tsc --init",
     "build": "tsc -p ."
@@ -36,6 +36,8 @@
     "uuidv4": "6.1.0"
   },
   "devDependencies": {
+    "faker": "5.5.3",
+    "nodemon": "^2.0.4",
     "@types/bcrypt": "^3.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.6",
@@ -46,11 +48,9 @@
     "@types/pg": "^8.6.5",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
-    "faker": "5.5.3",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "nodemon": "^2.0.4",
     "prettier": "^2.5.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.8.0"

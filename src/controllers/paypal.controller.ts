@@ -2,7 +2,7 @@ import {http} from '@src/storage';
 
 import {PropertyDecorator} from '@src/decorators';
 import {validateNewBody, validateParameter} from '@src/utils';
-import {PaypalService, Hubspot} from '@src/services';
+import {PaypalService} from '@src/services';
 
 type ObjectType = {
   [a: string]: PropertyDecorator;
@@ -40,10 +40,10 @@ const paySchema: ObjectType = {
 };
 
 export const errorCallback = async () => {
-  const hubspot = new Hubspot();
+  // const hubspot = new Hubspot();
 
   try {
-    const {redirect, dealId} = await validateParameter(
+    const {redirect /* dealId */} = await validateParameter(
       {
         amount: 'number',
         dealId: 'number',
@@ -53,7 +53,7 @@ export const errorCallback = async () => {
       true
     );
 
-    await hubspot.udpateDeal(dealId, false);
+    // await hubspot.udpateDeal(dealId, false);
 
     return http.response.redirect(redirect + '?success=false');
   } catch {
@@ -63,10 +63,10 @@ export const errorCallback = async () => {
 
 export const successCallback = async () => {
   const paypal = new PaypalService();
-  const hubspot = new Hubspot();
+  // const hubspot = new Hubspot();
 
   try {
-    const {paymentId, PayerID, amount, redirect, dealId} =
+    const {paymentId, PayerID, amount, redirect /* dealId */} =
       await validateParameter(
         {
           paymentId: 'string',
@@ -81,7 +81,7 @@ export const successCallback = async () => {
 
     await paypal.executePayment(amount, PayerID, paymentId);
 
-    await hubspot.udpateDeal(dealId, true);
+    // await hubspot.udpateDeal(dealId, true);
 
     return http.response.redirect(redirect + '?success=true');
   } catch {
@@ -90,32 +90,34 @@ export const successCallback = async () => {
 };
 
 export const getPaymentCheckout = async () => {
-  const hubspot = new Hubspot();
+  // const hubspot = new Hubspot();
   const paypal = new PaypalService();
-  let userId = 0;
+  // const userId = 0;
 
   try {
-    const {payData, redirect, userData, lang} = await validateNewBody(
+    const {payData, redirect, /* userData */ lang} = await validateNewBody(
       paySchema
     );
 
-    const existUser = await hubspot.getUser(userData.email);
+    // const existUser = await hubspot.getUser(userData.email);
 
-    if (existUser === undefined) {
-      const newUser = await hubspot.insertUser(userData);
+    // if (existUser === undefined) {
+    //   const newUser = await hubspot.insertUser(userData);
 
-      userId = newUser;
-    } else userId = existUser;
+    //   userId = newUser;
+    // } else userId = existUser;
 
-    const dealId = await hubspot.insertDeal(
-      userData.firstName,
-      userId,
-      payData.cost
-    );
+    // const dealId = await hubspot.insertDeal(
+    //   userData.firstName,
+    //   userId,
+    //   payData.cost
+    // );
 
-    await hubspot.insertNote(dealId, userData, payData);
+    // await hubspot.insertNote(dealId, userData, payData);
 
-    const query = `?amount=${payData.cost}&redirect=${redirect}&dealId=${dealId}`;
+    const query = `?amount=${payData.cost}&redirect=${redirect}&dealId=${
+      /*dealId*/ 1
+    }`;
 
     const datas = await paypal.createPayment(payData.cost, query, lang);
 
