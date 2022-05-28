@@ -1,6 +1,5 @@
 import {properties, modelStore, PropertyDecorator} from '@src/decorators';
 import fs from 'fs';
-import {delElement} from '@src/utils';
 
 interface SchemaModel {
   type?: string;
@@ -21,43 +20,38 @@ interface HRef {
   $ref: string;
 }
 
-const buildSchema = (options: PropertyDecorator, generatedAr?: string[]) => {
-  const {type} = options;
-  let res: SchemaModel;
+interface IModel {
+  [a: string]: PropertyDecorator;
+}
 
-  if (typeof type === 'string') res = delElement(options, 'required');
-  else {
-    if (type instanceof Array)
-      res = {
-        type: 'array',
-        items: buildSchema({type: type[0]}),
-      };
-    else {
-      const schema: SchemaModel = {
-        type: 'object',
-        required: [],
-        properties: {},
-      };
+const buildSchema = (model: IModel, generateds?: string[]) => {
+  const schema: SchemaModel = {
+    type: 'object',
+    required: [],
+    properties: {},
+  };
 
-      for (const property in type) {
-        const {required, generated} = type[property];
+  for (const property in model) {
+    const {type, generated, required, format} = model[property];
 
-        if (generated && generatedAr) {
-          generatedAr.push(property);
-          continue;
-        }
-
-        if (required) schema.required?.push(property);
-
-        if (schema.properties)
-          schema.properties[property] = buildSchema(type[property]);
-      }
-
-      res = schema;
+    if (generated && generateds) {
+      generateds.push(property);
+      continue;
     }
+
+    if (schema.properties) {
+      if (type instanceof Array)
+        schema.properties[property] = {
+          type: 'array',
+          items: {type: type[0]},
+        };
+      else schema.properties[property] = {type, format};
+    }
+
+    if (required) schema.required?.push(property);
   }
 
-  return res;
+  return schema;
 };
 
 export const generateSchemas = (
@@ -88,7 +82,7 @@ export const generateSchemas = (
     if (modelStore[model].entity) {
       const generatedAr: string[] = [];
 
-      schemas[model] = buildSchema({type: properties[model]}, generatedAr);
+      schemas[model] = buildSchema(properties[model], generatedAr);
 
       if (modelStore[model].entity) {
         const allOf: HRef[] = [];

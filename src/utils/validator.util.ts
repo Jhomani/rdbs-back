@@ -6,7 +6,7 @@ import Joi, {
   ArraySchema,
 } from 'joi';
 import {http} from '@src/storage';
-import {properties, PropertyDecorator} from '@src/decorators';
+import {properties, GeneralProperties} from '@src/decorators';
 
 type JoiObjectSchema = {
   [a: string]:
@@ -16,17 +16,30 @@ type JoiObjectSchema = {
     | ArraySchema
     | ObjectSchema;
 };
-type ObjectType = {
-  [a: string]: PropertyDecorator;
+
+export type ObjectType = {
+  [a: string]: ValidatorProperty;
 };
+
+export interface ValidatorProperty extends GeneralProperties {
+  type:
+    | 'string'
+    | 'date'
+    | 'number'
+    | 'boolean'
+    | ObjectType
+    | 'string'[]
+    | 'number'[]
+    | ObjectType[];
+}
 
 type ValidatorOptions<T> = {
   patch?: boolean;
   exclude?: (keyof T)[];
-  include?: PropertyDecorator[];
+  include?: ValidatorProperty[];
 };
 
-const joiTyped = (options: PropertyDecorator) => {
+const joiTyped = (options: ValidatorProperty) => {
   const {type, required, min, max, email} = options;
   let res;
 
@@ -111,8 +124,8 @@ export const validateBody = async <T>(
 
     if (
       options?.patch &&
-      arg.type instanceof Array &&
-      arg.type[0] instanceof Object
+      arg.type instanceof Array
+      // arg.type[0] instanceof Object
     )
       typedObject[`i_${attr}`] = Joi.array().items(Joi.number()).required();
 

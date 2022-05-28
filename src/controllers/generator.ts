@@ -6,6 +6,7 @@ import {formatPath} from '@src/utils';
 
 const controllersTyped: ClassesSet = controllers;
 
+// implement documatation of controllers on here
 export const generateControllers = (app: Application) => {
   const router = Router();
 

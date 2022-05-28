@@ -9,9 +9,9 @@
   "main": "./dist/app.js",
   "scripts": {
     "start": "node ./dist/app.js",
-    "launch": "nodemon  --ignore 'public/*' ./dist/app.js",
-    "prebuild:watch": "rm -fr ./dist",
-    "build:watch": "tsc --w",
+    "dev": "nodemon  --ignore 'public/*' ./dist/app.js",
+    "prewatch": "rm -fr ./dist",
+    "watch": "tsc --w",
     "migrate": "node dist/migrate.js",
     "init-ts": "tsc --init",
     "build": "tsc -p ."

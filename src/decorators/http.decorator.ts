@@ -27,7 +27,7 @@ const saveDeatails = <T, Q>(
     route,
     httpMethod,
     schemaRes: resModel?.name,
-    schemaReq: reqModel?.name || resModel?.name,
+    schemaReq: reqModel?.name ?? resModel?.name,
   };
 };
 

@@ -12,7 +12,7 @@ interface ParamStorage {
 export const paramStorage: ParamStorage = {};
 
 const saveDeatails = <T>(
-  ptype: string | {new (): T},
+  ptype: string | {new (): T}, // can be 'string', 'number' | 'Filter'
   target: object,
   methodName: string,
   paramIndex: number,
@@ -39,6 +39,7 @@ export const param = <T>(
   name: string,
   ptype: string | {new (): T} = 'string'
 ) => {
+  console.log(ptype);
   return (target: object, methodName: string, paramIndex: number) => {
     saveDeatails(ptype, target, methodName, paramIndex, name, 'pathParam');
   };

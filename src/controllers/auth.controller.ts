@@ -6,8 +6,28 @@ export class AuthController {
     console.log('Auth was instanced');
   }
 
-  @get('/users/login', Record)
+  @post('/users/login', Record)
   public login() {
+    console.log('Login methos Was excecuted');
+
+    return {
+      id: 1,
+      name: 'Carlos',
+    };
+  }
+
+  @post('/users/login', Record)
+  public signup() {
+    console.log('Login methos Was excecuted');
+
+    return {
+      id: 1,
+      name: 'Carlos',
+    };
+  }
+
+  @get('/user/me', Record)
+  public whoAmi() {
     console.log('Login methos Was excecuted');
 
     return {

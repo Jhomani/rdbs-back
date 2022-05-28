@@ -1,10 +1,11 @@
 import {property, model, belongsTo} from '@src/decorators';
 
 @model({entity: true, openAPI: true})
-export class Money {
+export class User {
   @property({
-    type: 'string',
+    type: 'number',
     generated: true,
+    serial: true,
   })
   id: string;
 

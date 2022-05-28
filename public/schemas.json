@@ -74,7 +74,8 @@
         "type": "string"
       },
       "atmId": {
-        "type": "string"
+        "type": "string",
+        "format": "uuid"
       }
     }
   },
@@ -112,6 +113,40 @@
       },
       {
         "$ref": "#/createdAt"
+      }
+    ]
+  },
+  "User": {
+    "type": "object",
+    "required": [
+      "amount",
+      "quantity",
+      "imageUrl",
+      "atmId"
+    ],
+    "properties": {
+      "amount": {
+        "type": "string"
+      },
+      "quantity": {
+        "type": "string"
+      },
+      "imageUrl": {
+        "type": "string"
+      },
+      "atmId": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  },
+  "User_Model": {
+    "allOf": [
+      {
+        "$ref": "#/id"
+      },
+      {
+        "$ref": "#/User"
       }
     ]
   }

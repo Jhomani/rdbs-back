@@ -1,12 +1,8 @@
 import {http} from '@src/storage';
 
-import {PropertyDecorator} from '@src/decorators';
 import {validateNewBody, validateParameter} from '@src/utils';
 import {PaypalService} from '@src/services';
-
-type ObjectType = {
-  [a: string]: PropertyDecorator;
-};
+import {ObjectType} from '@src/utils';
 
 const paySchema: ObjectType = {
   userData: {
