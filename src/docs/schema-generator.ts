@@ -7,6 +7,7 @@ interface SchemaModel {
   required?: string[];
   items?: SchemaModel;
   format?: string;
+  example?: string | number;
   min?: number;
   max?: number;
   properties?: {[a: string]: object};
@@ -60,20 +61,17 @@ export const generateSchemas = (
   const schemas: SchemasModel = {};
   const modelTagKeys: string[] = [];
 
-  generated = generated || [
-    {name: 'id', type: 'string', format: 'uuid'},
+  generated = generated ?? [
+    {name: 'id', type: 'number', example: 1},
     {name: 'createdAt', type: 'string', format: 'date-time'},
     {name: 'updatedAt', type: 'string', format: 'date-time'},
   ];
 
   generated.forEach(
-    ({type, format, name}) =>
+    ({name, ...others}) =>
       (schemas[name] = {
         properties: {
-          [name]: {
-            type,
-            format,
-          },
+          [name]: others,
         },
       })
   );

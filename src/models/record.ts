@@ -1,10 +1,11 @@
-import {property, model} from '@src/decorators';
+import {property, model, belongsTo} from '@src/decorators';
 
 @model({entity: true, openAPI: true})
 export class Record {
   @property({
     type: 'string',
     generated: true,
+    primaryKey: true,
   })
   id: string;
 
@@ -20,15 +21,15 @@ export class Record {
   })
   balance: string;
 
-  @property({
+  @belongsTo({
     required: true,
-    type: 'string',
+    type: 'number',
   })
-  userId: string;
+  user_id: number;
 
   @property({
     type: 'date',
     generated: true,
   })
-  createdAt: Date;
+  created_at: Date;
 }

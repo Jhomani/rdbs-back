@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS "Record" (
+  "id" VARCHAR(255) PRIMARY KEY,
+  "amount" VARCHAR(255) NOT NULL,
+  "balance" VARCHAR(255) NOT NULL,
+  "user_id" INTEGER NOT NULL,
+  "created_at" TIMESTAMP,
+  FOREIGN KEY ("user_id") REFERENCES "User" ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "Money" (
+  "id" VARCHAR(255),
+  "amount" VARCHAR(255) NOT NULL,
+  "quantity" VARCHAR(255) NOT NULL,
+  "imageUrl" VARCHAR(255) NOT NULL,
+  "atmId" VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "ATM" (
+  "id" VARCHAR(255),
+  "name" VARCHAR(255),
+  "address" VARCHAR(255) NOT NULL,
+  "createdAt" VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS "User" (
+  "id" SERIAL PRIMARY KEY,
+  "amount" VARCHAR(255) NOT NULL,
+  "email" VARCHAR(255) UNIQUE NOT NULL,
+  "quantity" VARCHAR(255) NOT NULL,
+  "role" VARCHAR(255) DEFAULT 'ADMIN',
+  "image_url" VARCHAR(255) NOT NULL
+);
+

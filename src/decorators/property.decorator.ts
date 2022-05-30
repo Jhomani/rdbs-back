@@ -6,10 +6,16 @@ interface BelongsToDecorator {
   format?: string;
 }
 
+interface RelationOpts {
+  foraignKey?: string;
+  targetKey?: string;
+}
+
 export interface GeneralProperties {
   required?: boolean;
   min?: number;
   max?: number;
+  unique?: boolean;
   serial?: boolean;
   primaryKey?: boolean;
   foraignKey?: boolean;
@@ -20,6 +26,7 @@ export interface GeneralProperties {
 
 export interface PropertyDecorator extends GeneralProperties {
   type: 'string' | 'date' | 'number' | 'boolean' | 'string'[] | 'number'[];
+  default?: string | number;
 }
 
 interface PropertiesStore {
@@ -50,33 +57,41 @@ export const belongsTo = (opts: BelongsToDecorator) => {
   };
 };
 
-export const hasMany = <T>(foraign: {new (): T}, customKey: string) => {
+const verifyEmpty = (model: string) => {
+  if (!modelStore[model])
+    modelStore[model] = modelStore[model] = {
+      hasMany: [],
+      hasOne: [],
+    };
+};
+
+export const hasMany = <T>(source: {new (): T}, opts?: RelationOpts) => {
   return (target: object, memberName: string) => {
     const modelName = target.constructor.name;
-    const targetName = foraign.constructor.name;
-    const foraignKey = customKey ?? `${modelName}Id`;
+    const targetName = source.name;
 
-    if (!modelStore[modelName].hasMany) modelStore[modelName].hasMany = [];
+    verifyEmpty(targetName);
 
-    modelStore[modelName].hasMany?.push({
-      model: targetName,
-      foraignKey,
+    modelStore[targetName].hasMany.push({
+      model: modelName,
+      foraignKey: opts?.foraignKey ?? `${modelName.toLowerCase()}_id`,
+      targetKey: opts?.targetKey ?? 'id',
       property: memberName,
     });
   };
 };
 
-export const hasOne = <T>(foraign: {new (): T}, customKey: string) => {
+export const hasOne = <T>(soure: {new (): T}, opts: RelationOpts) => {
   return (target: object, memberName: string) => {
     const modelName = target.constructor.name;
-    const targetName = foraign.constructor.name;
-    const foraignKey = customKey ?? `${modelName}Id`;
+    const targetName = soure.name;
 
-    if (!modelStore[modelName].hasOne) modelStore[modelName].hasOne = [];
+    verifyEmpty(targetName);
 
-    modelStore[modelName].hasOne?.push({
-      model: targetName,
-      foraignKey,
+    modelStore[targetName].hasOne.push({
+      model: modelName,
+      foraignKey: opts.foraignKey ?? `${modelName.toLowerCase()}_id`,
+      targetKey: opts.targetKey ?? 'id',
       property: memberName,
     });
   };

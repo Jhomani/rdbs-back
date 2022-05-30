@@ -1,11 +1,12 @@
-import {property, model, belongsTo} from '@src/decorators';
+import {property, model, hasMany} from '@src/decorators';
+import {Record} from './index';
 
 @model({entity: true, openAPI: true})
 export class User {
   @property({
     type: 'number',
-    generated: true,
     serial: true,
+    primaryKey: true,
   })
   id: string;
 
@@ -18,19 +19,28 @@ export class User {
   @property({
     required: true,
     type: 'string',
+    unique: true,
   })
-  quantity: string;
+  email: string;
 
   @property({
     required: true,
     type: 'string',
   })
-  imageUrl: string;
+  quantity: string;
 
-  @belongsTo({
+  @property({
+    type: 'string',
+    default: 'ADMIN',
+  })
+  role: string;
+
+  @property({
     required: true,
     type: 'string',
-    format: 'uuid',
   })
-  atmId: string;
+  image_url: string;
+
+  @hasMany(Record)
+  records?: Record[];
 }

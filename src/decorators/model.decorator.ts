@@ -1,14 +1,18 @@
 export interface IHasManyOne {
   model: string;
   foraignKey: string;
+  targetKey: string;
   property: string;
 }
 
-export interface ModelDecorator {
+interface ModelOptions {
   entity?: boolean;
   openAPI?: boolean;
-  hasMany?: IHasManyOne[];
-  hasOne?: IHasManyOne[];
+}
+
+export interface ModelDecorator extends ModelOptions {
+  hasMany: IHasManyOne[];
+  hasOne: IHasManyOne[];
 }
 
 interface ModelsStore {
@@ -17,15 +21,22 @@ interface ModelsStore {
 
 export const modelStore: ModelsStore = {};
 
-export const model = (opts: ModelDecorator = {}) => {
+export const model = (opts: ModelOptions = {}) => {
   return (constructor: Function) => {
     const modelName = constructor.name;
 
-    if (!modelStore[modelName]) modelStore[modelName] = {};
+    if (!modelStore[modelName])
+      modelStore[modelName] = {
+        hasMany: [],
+        hasOne: [],
+      };
 
     // let key: keyof typeof opts;
     // for (const key in opts) {
-    modelStore[modelName] = opts;
+    modelStore[modelName] = {
+      ...opts,
+      ...modelStore[modelName],
+    };
     // }
   };
 };

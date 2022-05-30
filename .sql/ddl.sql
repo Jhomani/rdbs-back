@@ -1,7 +1,7 @@
 SET timezone = 'America/La_Paz';
 
 CREATE TABLE IF NOT EXISTS "Alumno" (
-  "ci" serial PRIMARY KEY,
+  "ci" SERIAL PRIMARY KEY,
   "nom" VARCHAR (100) NOT NULL,
   "sexo" VARCHAR (10) NOT NULL,
   "direc" VARCHAR (200) NOT NULL,
@@ -10,33 +10,34 @@ CREATE TABLE IF NOT EXISTS "Alumno" (
 );
 
 CREATE TABLE IF NOT EXISTS "Carrera" (
-  "sigla" serial PRIMARY KEY,
+  "sigla" SERIAL PRIMARY KEY,
   "nom" VARCHAR (100) NOT NULL,
   "descrip" VARCHAR (100) NOT NULL,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS "Materia" (
-  "sigla" serial PRIMARY KEY,
+  "sigla" SERIAL PRIMARY KEY,
   "nom" VARCHAR (100) NOT NULL,
   "descrip" VARCHAR (100) NOT NULL,
   "nivel" INTEGER NOT NULL,
   "creditos" VARCHAR (200) NOT NULL,
   "area" VARCHAR (50) NOT NULL,
   "sigla_car" INTEGER NOT NULL,
-  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
   FOREIGN KEY ("sigla_car") REFERENCES "Carrera" ("sigla")
 );
 
 
 CREATE TABLE IF NOT EXISTS "Nota" (
+  "id" SERIAL PRIMARY KEY,
   "ci" INTEGER NOT NULL,
   "sigla" INTEGER NOT NULL,
   "gestion" VARCHAR (20) NOT NULL,
   "calif" INTEGER NOT NULL,
 
-  FOREIGN KEY ("ci") REFERENCES "Alumno" ("ci")
+  FOREIGN KEY ("ci") REFERENCES "Alumno" ("ci"),
   FOREIGN KEY ("sigla") REFERENCES "Materia" ("sigla")
 );
 

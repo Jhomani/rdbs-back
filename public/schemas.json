@@ -2,8 +2,8 @@
   "id": {
     "properties": {
       "id": {
-        "type": "string",
-        "format": "uuid"
+        "type": "number",
+        "example": 1
       }
     }
   },
@@ -28,7 +28,7 @@
     "required": [
       "amount",
       "balance",
-      "userId"
+      "user_id"
     ],
     "properties": {
       "amount": {
@@ -37,8 +37,8 @@
       "balance": {
         "type": "string"
       },
-      "userId": {
-        "type": "string"
+      "user_id": {
+        "type": "number"
       }
     }
   },
@@ -51,7 +51,7 @@
         "$ref": "#/Record"
       },
       {
-        "$ref": "#/createdAt"
+        "$ref": "#/created_at"
       }
     ]
   },
@@ -120,31 +120,30 @@
     "type": "object",
     "required": [
       "amount",
+      "email",
       "quantity",
-      "imageUrl",
-      "atmId"
+      "image_url"
     ],
     "properties": {
+      "id": {
+        "type": "number"
+      },
       "amount": {
+        "type": "string"
+      },
+      "email": {
         "type": "string"
       },
       "quantity": {
         "type": "string"
       },
-      "imageUrl": {
+      "image_url": {
         "type": "string"
-      },
-      "atmId": {
-        "type": "string",
-        "format": "uuid"
       }
     }
   },
   "User_Model": {
     "allOf": [
-      {
-        "$ref": "#/id"
-      },
       {
         "$ref": "#/User"
       }
